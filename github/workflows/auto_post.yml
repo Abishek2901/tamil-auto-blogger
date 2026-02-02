@@ -1,1 +1,29 @@
+name: Tamil Auto Blogger
+
+on:
+  schedule:
+    - cron: "30 4,10,14 * * *"  # IST safe times
+  workflow_dispatch:
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run Auto Blogger
+      env:
+        NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        BLOG_ID: ${{ secrets.BLOG_ID }}
+        GOOGLE_CREDS: ${{ secrets.GOOGLE_CREDS }}
+      run: python main.py
 
